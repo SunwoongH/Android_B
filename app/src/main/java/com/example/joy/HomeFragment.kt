@@ -22,6 +22,19 @@ class HomeFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction().replace(R.id.main_frm, AlbumFragment()).commitAllowingStateLoss()
         }
 
+        // 홈 패널
+        val panelAdapter = PanelVPAdapter(this)
+        binding.homePannelVp.adapter = panelAdapter
+
+        // 홈 광고 배너
+        val bannerAdapter = BannerVPAdapter(this)
+        bannerAdapter.addFragment(BannerFragment(R.drawable.img_home_viewpager_exp))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.img_home_viewpager_exp2))
+        binding.homeBannerVp.adapter = bannerAdapter
+
+        val springDotsIndicator = binding.homeIndicator
+        springDotsIndicator.setViewPager2(binding.homePannelVp)
+
         return binding.root
     }
 }

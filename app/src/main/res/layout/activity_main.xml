@@ -10,10 +10,26 @@
         android:id="@+id/main_frm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
-        app:layout_constraintBottom_toTopOf="@id/main_player_cl"
+        app:layout_constraintBottom_toTopOf="@id/main_song_progress_sb"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <SeekBar
+        android:id="@+id/main_song_progress_sb"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="-5dp"
+        android:background="@null"
+        android:paddingTop="0dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:progress="0"
+        android:progressBackgroundTint="@color/song_player_bg"
+        android:progressTint="@color/song_player"
+        android:thumb="@color/transparent"
+        android:max="100000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_frm"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_player_cl"
@@ -21,6 +37,7 @@
         android:layout_height="wrap_content"
         android:background="#F9F9F9"
         android:paddingVertical="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/main_song_progress_sb"
         app:layout_constraintBottom_toTopOf="@id/main_bnv">
 
         <LinearLayout
@@ -64,10 +81,17 @@
                 android:src="@drawable/btn_miniplayer_previous" />
 
             <ImageView
-                android:id="@+id/main_miniplayer_btn"
+                android:id="@+id/main_miniplayer_off_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/btn_miniplayer_play" />
+
+            <ImageView
+                android:id="@+id/main_miniplayer_on_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/btn_miniplay_mvpause"
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/main_pause_btn"
@@ -89,9 +113,7 @@
                 android:layout_marginHorizontal="15dp"
                 android:src="@drawable/btn_miniplayer_go_list" />
 
-
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
