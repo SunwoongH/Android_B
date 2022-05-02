@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/bookmark_song_album_iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/img_album_exp"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/bookmark_song_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="15dp"
+        android:text="제목"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bookmark_song_album_iv"/>
+
+    <TextView
+        android:id="@+id/bookmark_song_singer_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="가수"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/bookmark_song_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/bookmark_song_title_tv"/>
+
+    <ImageView
+        android:id="@+id/bookmark_song_play_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/btn_miniplayer_play"
+        app:layout_constraintBottom_toBottomOf="@id/bookmark_song_delete_iv"
+        app:layout_constraintEnd_toStartOf="@id/bookmark_song_delete_iv"
+        app:layout_constraintTop_toTopOf="@id/bookmark_song_delete_iv"/>
+
+    <ImageView
+        android:id="@+id/bookmark_song_delete_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/btn_player_more"
+        app:layout_constraintBottom_toBottomOf="@+id/bookmark_song_singer_tv"
+        app:layout_constraintTop_toTopOf="@+id/bookmark_song_title_tv"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

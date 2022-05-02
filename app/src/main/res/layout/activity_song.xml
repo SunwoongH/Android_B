@@ -198,7 +198,7 @@
             android:src="@drawable/btn_miniplayer_previous"/>
 
         <ImageView
-            android:id="@+id/song_minplayer_iv"
+            android:id="@+id/song_main_player_iv"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/btn_miniplayer_play"/>

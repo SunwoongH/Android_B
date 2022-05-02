@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.joy.databinding.FragmentPanelBinding
 
-class PanelFragment : Fragment() {
+class PanelFragment(private val imageResource: Int) : Fragment() {
     lateinit var binding: FragmentPanelBinding
 
     override fun onCreateView(
@@ -16,6 +16,7 @@ class PanelFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPanelBinding.inflate(inflater, container, false)
+        binding.homePannelBackgroundIv.setImageResource(imageResource)
 
         return binding.root
     }
