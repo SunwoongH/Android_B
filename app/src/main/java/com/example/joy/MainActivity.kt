@@ -4,22 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.joy.data.Album
 import com.example.joy.data.Music
 import com.example.joy.data.Song
+import com.example.joy.data.SongDatabase
 import com.example.joy.databinding.ActivityMainBinding
-import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
-    private var song: Song = Song()
+    private lateinit var binding: ActivityMainBinding
     private lateinit var timer: Timer
-    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
     private var isSwitch: Boolean = false
-    private var gson: Gson = Gson()
+    private val songs = arrayListOf<Song>()
+    private lateinit var songDB: SongDatabase
+    private var nowPos = 0
+
     companion object { var music: Music = Music() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,66 +28,71 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setActivityLauncher()
+        songDB = SongDatabase.getInstance(this)!!
 
-        switchToSongActivityOnClick()
+        inputSongs()
+        initPlayList()
+
         miniPlayerOnClick()
+        switchToSongActivityOnClick()
+        changeSongOnClick()
 
         initBottomNavigation()
     }
 
     override fun onStart() {
         super.onStart()
+        isSwitch = false
+        initPlayList()
         val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-        val songJson = sharedPreferences.getString("songData", null)
-        song = if (songJson == null) {
-            Song("LILAC", "아이유 (IU)", 0, 0f,60, false, "music_lilac", R.drawable.img_album_exp2)
-        } else {
-            gson.fromJson(songJson, Song::class.java)
-        }
-        //if (song.second == song.playTime) song.second = 0
+        val songId = sharedPreferences.getInt("songId", 0)
 
-        setMiniPlayer()
+        nowPos = getPlayingSongPosition(songId)
+        setMiniPlayer(songs[nowPos])
     }
 
     override fun onPause() {
         super.onPause()
         if (!isSwitch) setMiniPlayerStatus(false)
-        song.second = timer.getSecond()
-        song.mills = timer.getMills()
-        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val songJson = gson.toJson(song)
-        editor.putString("songData", songJson)
-        editor.apply()
         timer.flag = true
         timer.interrupt()
+        updateCurrentSong()
+        val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
+        editor.putInt("songId", songs[nowPos].id)
+        editor.apply()
     }
     
-    // activity launcher 설정
-    private fun setActivityLauncher() {
-        activityLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                song = result.data?.getSerializableExtra("song") as Song
-                isSwitch = false
-            }
-        }
+    // 음악 플레이리스트 초기화
+    private fun initPlayList() {
+        songs.clear()
+        songs.addAll(songDB.songDao().getSongs())
     }
-    
-    // MainActivity -> SongActivity
-    private fun switchToSongActivityOnClick() {
-        binding.mainPlayerCl.setOnClickListener {
-            isSwitch = true
-            timer.flag = true
-            timer.interrupt()
-            song = Song(song.title, song.singer, timer.getSecond(), timer.getMills(), timer.getPlayTime(), timer.getIsPlaying(), song.music, song.coverImg)
-            val intent = Intent(this, SongActivity::class.java)
-            intent.putExtra("song", song)
-            activityLauncher.launch(intent)
-        }
+
+    // Room DB 초기 음악 설정
+    private fun inputSongs() {
+        val songs = songDB.songDao().getSongs()
+        if (songs.isNotEmpty()) return
+
+        songDB.songDao().insert(
+            Song("LILAC", "아이유 (IU)", 0, 0f, 215, false, "music_lilac", R.drawable.img_album_exp2, false)
+        )
+        songDB.songDao().insert(
+            Song("Butter", "방탄소년단 (BTS)", 0, 0f, 165, false, "music_butter", R.drawable.img_album_exp, false)
+        )
+        songDB.songDao().insert(
+            Song("Next Level", "aespa", 0, 0f, 222, false, "music_next", R.drawable.img_album_exp3, false)
+        )
+        songDB.songDao().insert(
+            Song("작은 것들을 위한 시", "방탄소년단 (BTS)", 0, 0f, 252, false, "music_boy", R.drawable.img_album_exp4, false)
+        )
+        songDB.songDao().insert(
+            Song("BAAM", "모모랜드 (MOMOLAND)", 0, 0f, 210, false, "music_bboom", R.drawable.img_album_exp5, false)
+        )
+        songDB.songDao().insert(
+            Song("Weekend", "태연 (TAEYEON)", 0, 0f, 190, false, "music_flu", R.drawable.img_album_exp6, false)
+        )
     }
-    
+
     // 미니 플레이어 재생 / 중지
     private fun miniPlayerOnClick() {
         binding.mainMiniplayerOffBtn.setOnClickListener {
@@ -98,22 +103,87 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 앨범 플레이 아이콘 클릭시 미니 플레이어 synchronization
-    fun changeMusic(album: Album) {
+    // MainActivity -> SongActivity
+    private fun switchToSongActivityOnClick() {
+        binding.mainPlayerCl. setOnClickListener {
+            isSwitch = true
+            val intent = Intent(this, SongActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    // previous, next 이동 버튼
+    private fun changeSongOnClick() {
+        binding.mainMiniplayerNextBtn.setOnClickListener {
+            changeSong(1)
+        }
+        binding.mainMiniplayerPreviousBtn.setOnClickListener {
+            changeSong(-1)
+        }
+    }
+
+    // previous <- current -> next 이동
+    private fun changeSong(direct: Int) {
+        if (nowPos + direct < 0) {
+            Toast.makeText(this, "first song", Toast.LENGTH_SHORT).show()
+            return
+        } else if (nowPos + direct >= songs.size) {
+            Toast.makeText(this, "last song", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        nowPos += direct
         if (music.statusMediaPlayer()) {
             music.releaseMediaPlayer()
             timer.flag = true
             timer.interrupt()
         }
-        song = Song(album.title, album.singer, 0, 0f, 0, true, album.name, album.coverImg)
-        setMiniPlayer()
+        updateCurrentSong(true)
+        setMiniPlayer(songs[nowPos])
+    }
+
+    // 음악 플레이리스트에서 현재 음악의 position 값 반환
+    private fun getPlayingSongPosition(songId: Int): Int {
+        for (i in 0 until songs.size) {
+            if (songs[i].id == songId) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    // 현재 음악 정보 Room DB에 update
+    private fun updateCurrentSong(isInit: Boolean = false) {
+        if (isInit) {
+            songs[nowPos].second = 0
+            songs[nowPos].mills = 0f
+            songs[nowPos].isPlaying = true
+        } else {
+            songs[nowPos].second = timer.getSecond()
+            songs[nowPos].mills = timer.getMills()
+            songs[nowPos].isPlaying = timer.getIsPlaying()
+        }
+
+        songDB.songDao().updatePlaytime(songs[nowPos].second, songs[nowPos].mills, songs[nowPos].isPlaying)
+        //Log.d("sss", songDB.songDao().getSong(songs[nowPos].id).toString())
+    }
+
+    // 앨범 플레이 아이콘 클릭시 미니 플레이어 synchronization
+    fun changeAlbumSong(album: Album) {
+        if (music.statusMediaPlayer()) {
+            music.releaseMediaPlayer()
+            timer.flag = true
+            timer.interrupt()
+        }
+        nowPos = getPlayingSongPosition(songDB.songDao().getSongByTitle(album.title).id)
+        updateCurrentSong(true)
+        setMiniPlayer(songs[nowPos])
     }
 
     // 미니 플레이어 synchronization
-    private fun setMiniPlayer() {
+    private fun setMiniPlayer(song: Song) {
         if (!music.statusMediaPlayer()) {
             music.createMediaPlayer(resources.getIdentifier(song.music, "raw", this.packageName), this)
-            song.playTime = music.getDuration() / 1000
         }
 
         binding.mainMiniplayerTitleTv.text = song.title
@@ -124,10 +194,10 @@ class MainActivity : AppCompatActivity() {
         setMiniPlayerStatus(song.isPlaying)
     }
 
-    // 미니 플레이어 재생 <-> 중지
+    // 미니 플레이어 재생 / 중지
     private fun setMiniPlayerStatus(isPlaying: Boolean) {
-        song.isPlaying = isPlaying
-        timer.isPlaying = song.isPlaying
+        songs[nowPos].isPlaying = isPlaying
+        timer.isPlaying = songs[nowPos].isPlaying
 
         if (isPlaying) {
             binding.mainMiniplayerOffBtn.visibility = View.GONE
@@ -144,8 +214,8 @@ class MainActivity : AppCompatActivity() {
 
     // 미니 플레이어 timer thread 시작
     private fun startTimer() {
-        timer = Timer(song.playTime, song.isPlaying)
-        timer.set(song.second, song.mills)
+        timer = Timer(songs[nowPos].playTime, songs[nowPos].isPlaying)
+        timer.set(songs[nowPos].second, songs[nowPos].mills)
         timer.start()
     }
 
@@ -162,8 +232,6 @@ class MainActivity : AppCompatActivity() {
         fun getSecond(): Int = second
 
         fun getMills(): Float = mills
-
-        fun getPlayTime(): Int = playTime
 
         fun getIsPlaying(): Boolean = isPlaying
 

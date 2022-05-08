@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
                 changeAlbumFragment(album)
             }
             override fun onPlayClick(album: Album) {
-                (requireActivity() as MainActivity).changeMusic(album)
+                (requireActivity() as MainActivity).changeAlbumSong(album)
             }
 //            override fun onRemoveAlbum(position: Int) {
 //                albumRVAdapter.removeItem(position)

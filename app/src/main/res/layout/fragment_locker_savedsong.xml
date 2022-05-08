@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/store_song_all_select_iv"
+        android:id="@+id/saved_song_all_select_iv"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="15dp"
@@ -16,36 +16,36 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/store_song_all_select_tv"
+        android:id="@+id/saved_song_all_select_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:text="전체선택"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@id/store_song_all_select_iv"
-        app:layout_constraintStart_toEndOf="@id/store_song_all_select_iv"
-        app:layout_constraintTop_toTopOf="@id/store_song_all_select_iv"/>
+        app:layout_constraintBottom_toBottomOf="@id/saved_song_all_select_iv"
+        app:layout_constraintStart_toEndOf="@id/saved_song_all_select_iv"
+        app:layout_constraintTop_toTopOf="@id/saved_song_all_select_iv"/>
 
     <ImageView
-        android:id="@+id/store_song_all_listen_iv"
+        android:id="@+id/saved_song_all_listen_iv"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="7dp"
         android:src="@drawable/icon_browse_arrow_right"
-        app:layout_constraintBottom_toBottomOf="@id/store_song_all_select_tv"
-        app:layout_constraintStart_toEndOf="@id/store_song_all_select_tv"
-        app:layout_constraintTop_toTopOf="@id/store_song_all_select_tv"/>
+        app:layout_constraintBottom_toBottomOf="@id/saved_song_all_select_tv"
+        app:layout_constraintStart_toEndOf="@id/saved_song_all_select_tv"
+        app:layout_constraintTop_toTopOf="@id/saved_song_all_select_tv"/>
 
     <TextView
-        android:id="@+id/store_song_all_listen_tv"
+        android:id="@+id/saved_song_all_listen_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:textSize="15sp"
         android:text="전체듣기"
-        app:layout_constraintTop_toTopOf="@id/store_song_all_listen_iv"
-        app:layout_constraintBottom_toBottomOf="@id/store_song_all_listen_iv"
-        app:layout_constraintStart_toEndOf="@id/store_song_all_listen_iv"/>
+        app:layout_constraintTop_toTopOf="@id/saved_song_all_listen_iv"
+        app:layout_constraintBottom_toBottomOf="@id/saved_song_all_listen_iv"
+        app:layout_constraintStart_toEndOf="@id/saved_song_all_listen_iv"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -54,17 +54,17 @@
         android:text="편집"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/store_song_all_listen_tv"
-        app:layout_constraintBottom_toBottomOf="@id/store_song_all_listen_tv"/>
+        app:layout_constraintTop_toTopOf="@id/saved_song_all_listen_tv"
+        app:layout_constraintBottom_toBottomOf="@id/saved_song_all_listen_tv"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/store_rv"
+        android:id="@+id/saved_song_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         tools:listitem="@layout/item_bookmark"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/store_song_all_select_tv"/>
+        app:layout_constraintTop_toBottomOf="@id/saved_song_all_select_tv"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

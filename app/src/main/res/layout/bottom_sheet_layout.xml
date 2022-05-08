@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:behavior_peekHeight="60dp"
+    android:background="#3440DC">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet_play_cl"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="30dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/bottom_sheet_play_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/btn_editbar_play"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="듣기"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_play_iv"
+                app:layout_constraintStart_toStartOf="@id/bottom_sheet_play_iv"
+                app:layout_constraintEnd_toEndOf="@id/bottom_sheet_play_iv"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet_playlist_cl"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/bottom_sheet_play_cl"
+            app:layout_constraintStart_toEndOf="@id/bottom_sheet_play_cl"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_sheet_play_cl">
+
+            <ImageView
+                android:id="@+id/bottom_sheet_playlist_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/btn_editbar_addplaylist"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="재생목록"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_playlist_iv"
+                app:layout_constraintStart_toStartOf="@id/bottom_sheet_playlist_iv"
+                app:layout_constraintEnd_toEndOf="@id/bottom_sheet_playlist_iv"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet_mylist_cl"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/bottom_sheet_playlist_cl"
+            app:layout_constraintStart_toEndOf="@id/bottom_sheet_playlist_cl"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_sheet_playlist_cl">
+
+            <ImageView
+                android:id="@+id/bottom_sheet_mylist_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/btn_editbar_mylist"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내 리스트"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_mylist_iv"
+                app:layout_constraintStart_toStartOf="@id/bottom_sheet_mylist_iv"
+                app:layout_constraintEnd_toEndOf="@id/bottom_sheet_mylist_iv"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet_unlike_cl"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/bottom_sheet_mylist_cl"
+            app:layout_constraintStart_toEndOf="@id/bottom_sheet_mylist_cl"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_sheet_mylist_cl">
+
+            <ImageView
+                android:id="@+id/bottom_sheet_unlike_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/btn_editbar_delete"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="싫어요"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_unlike_iv"
+                app:layout_constraintStart_toStartOf="@id/bottom_sheet_unlike_iv"
+                app:layout_constraintEnd_toEndOf="@id/bottom_sheet_unlike_iv"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
