@@ -13,6 +13,7 @@ import com.example.joy.adapter.AlbumRVAdapter
 import com.example.joy.adapter.BannerVPAdapter
 import com.example.joy.adapter.PanelVPAdapter
 import com.example.joy.data.Album
+import com.example.joy.data.SongDatabase
 import com.example.joy.databinding.FragmentHomeBinding
 import com.google.gson.Gson
 
@@ -21,6 +22,7 @@ class HomeFragment : Fragment() {
     private lateinit var handler: Handler
     private var currentPage: Int = 0
     private var albumData = ArrayList<Album>()
+    private lateinit var songDB: SongDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,14 +31,8 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        albumData.apply {
-            add(Album("LILAC", "아이유 (IU)", R.drawable.img_album_exp2, "music_lilac"))
-            add(Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp, "music_butter"))
-            add(Album("Next Level", "aespa", R.drawable.img_album_exp3, "music_next"))
-            add(Album("작은 것들을 위한 시", "방탄소년단 (BTS)", R.drawable.img_album_exp4, "music_boy"))
-            add(Album("BAAM", "모모랜드 (MOMOLAND)", R.drawable.img_album_exp5, "music_bboom"))
-            add(Album("Weekend", "태연 (TAEYEON)", R.drawable.img_album_exp6, "music_flu"))
-        }
+        songDB = SongDatabase.getInstance(requireContext())!!
+        albumData.addAll(songDB.albumDao().getAlbums())
 
         val albumRVAdapter = AlbumRVAdapter(albumData)
         binding.homeTodayMusicAlbumRv.adapter = albumRVAdapter

@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         songDB = SongDatabase.getInstance(this)!!
 
         inputSongs()
+        inputAlbums()
+
         initPlayList()
 
         miniPlayerOnClick()
@@ -91,6 +93,18 @@ class MainActivity : AppCompatActivity() {
         songDB.songDao().insert(
             Song("Weekend", "태연 (TAEYEON)", 0, 0f, 190, false, "music_flu", R.drawable.img_album_exp6, false)
         )
+    }
+
+    private fun inputAlbums() {
+        val albums = songDB.albumDao().getAlbums()
+        if (albums.isNotEmpty()) return
+
+        songDB.albumDao().insert(Album(0, "LILAC", "아이유 (IU)", R.drawable.img_album_exp2, "music_lilac"))
+        songDB.albumDao().insert(Album(1, "Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp, "music_butter"))
+        songDB.albumDao().insert(Album(2, "Next Level", "aespa", R.drawable.img_album_exp3, "music_next"))
+        songDB.albumDao().insert(Album(3, "작은 것들을 위한 시", "방탄소년단 (BTS)", R.drawable.img_album_exp4, "music_boy"))
+        songDB.albumDao().insert(Album(4,"BAAM", "모모랜드 (MOMOLAND)", R.drawable.img_album_exp5, "music_bboom"))
+        songDB.albumDao().insert(Album(5,"Weekend", "태연 (TAEYEON)", R.drawable.img_album_exp6, "music_flu"))
     }
 
     // 미니 플레이어 재생 / 중지

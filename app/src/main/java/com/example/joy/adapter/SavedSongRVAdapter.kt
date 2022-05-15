@@ -8,7 +8,7 @@ import com.example.joy.data.Album
 import com.example.joy.data.Song
 import com.example.joy.databinding.ItemBookmarkBinding
 
-class SavedSongRVAdapter(): RecyclerView.Adapter<SavedSongRVAdapter.ViewHolder>() {
+class SavedSongRVAdapter : RecyclerView.Adapter<SavedSongRVAdapter.ViewHolder>() {
     private val songs = ArrayList<Song>()
 
     interface MyItemClickListener {
